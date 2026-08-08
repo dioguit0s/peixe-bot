@@ -1,7 +1,7 @@
 const { criarComandoLancamento } = require('./shared/lancamentoCommand');
 
 module.exports = criarComandoLancamento({
-  tipo: 'gasto',
-  nome: 'gasto',
-  descricao: 'Registra um gasto',
+  tipo: 'receita',
+  nome: 'receita',
+  descricao: 'Registra uma receita',
 });

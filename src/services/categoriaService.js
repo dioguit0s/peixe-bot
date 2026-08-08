@@ -20,4 +20,32 @@ function listarCategorias(guildId, tipo) {
     .all(guildId, tipo);
 }
 
-module.exports = { getOrCreateCategoria, listarCategorias };
+function buscarCategoriaPorNome(nome, tipo, guildId) {
+  return db
+    .prepare('SELECT * FROM categoria WHERE nome = ? AND tipo = ? AND guild_id = ?')
+    .get(nome, tipo, guildId);
+}
+
+function buscarCategoriasPorNome(nome, guildId) {
+  return db
+    .prepare('SELECT * FROM categoria WHERE nome = ? AND guild_id = ?')
+    .all(nome, guildId);
+}
+
+function renomearCategoria(id, novoNome) {
+  db.prepare('UPDATE categoria SET nome = ? WHERE id = ?').run(novoNome, id);
+  return db.prepare('SELECT * FROM categoria WHERE id = ?').get(id);
+}
+
+function removerCategoria(id) {
+  db.prepare('DELETE FROM categoria WHERE id = ?').run(id);
+}
+
+module.exports = {
+  getOrCreateCategoria,
+  listarCategorias,
+  buscarCategoriaPorNome,
+  buscarCategoriasPorNome,
+  renomearCategoria,
+  removerCategoria,
+};
