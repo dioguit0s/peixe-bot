@@ -36,3 +36,18 @@ CREATE TABLE IF NOT EXISTS orcamento (
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   UNIQUE (usuario_id, categoria_id)
 );
+
+CREATE TABLE IF NOT EXISTS transacao_recorrente (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  usuario_id INTEGER NOT NULL REFERENCES usuario (id),
+  categoria_id INTEGER NOT NULL REFERENCES categoria (id),
+  tipo TEXT NOT NULL CHECK (tipo IN ('gasto', 'receita')),
+  valor REAL NOT NULL,
+  descricao TEXT,
+  dia_mes INTEGER NOT NULL CHECK (dia_mes BETWEEN 1 AND 31),
+  ativo INTEGER NOT NULL DEFAULT 1,
+  ultimo_lancamento TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_transacao_recorrente_usuario ON transacao_recorrente (usuario_id);

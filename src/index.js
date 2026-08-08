@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits, Events } = require('discord.js');
 const { token } = require('./config/env');
+const { iniciar: iniciarJobRecorrentes } = require('./jobs/lancarRecorrentes');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -24,6 +25,7 @@ if (fs.existsSync(commandsPath)) {
 
 client.once(Events.ClientReady, (readyClient) => {
   console.log(`Bot online como ${readyClient.user.tag}`);
+  iniciarJobRecorrentes();
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {

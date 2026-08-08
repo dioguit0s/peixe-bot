@@ -48,4 +48,4 @@ function parseMesParaIntervalo(mesStr) {
   return { dataInicio, dataFim };
 }
 
-module.exports = { formatarData, formatarMoeda, parseMesParaIntervalo };
+module.exports = { formatarData, formatarMoeda, parseMesParaIntervalo, ultimoDiaDoMes };
