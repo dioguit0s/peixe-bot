@@ -27,3 +27,12 @@ CREATE TABLE IF NOT EXISTS transacao (
 
 CREATE INDEX IF NOT EXISTS idx_transacao_usuario ON transacao (usuario_id);
 CREATE INDEX IF NOT EXISTS idx_transacao_categoria ON transacao (categoria_id);
+
+CREATE TABLE IF NOT EXISTS orcamento (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  usuario_id INTEGER NOT NULL REFERENCES usuario (id),
+  categoria_id INTEGER NOT NULL REFERENCES categoria (id),
+  valor_limite REAL NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE (usuario_id, categoria_id)
+);

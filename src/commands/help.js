@@ -16,6 +16,10 @@ const CATEGORIAS = [
     comandos: ['categoria', 'categorias'],
   },
   {
+    titulo: '🎯 Orçamento',
+    comandos: ['orcamento'],
+  },
+  {
     titulo: '⚙️ Outros',
     comandos: ['ping'],
   },
@@ -89,6 +93,16 @@ const COMANDOS = {
     uso: '/categorias [tipo:<gasto|receita>]',
     parametros: ['tipo (opcional): filtra por gasto ou receita — padrão mostra as duas'],
     exemplo: '/categorias tipo:gasto',
+  },
+  orcamento: {
+    resumo: 'Define, lista ou remove limites mensais de gasto por categoria',
+    uso: '/orcamento definir categoria:<texto> tipo:<gasto|receita> valor:<número>\n/orcamento listar\n/orcamento remover categoria:<texto> tipo:<gasto|receita>',
+    parametros: [
+      'definir: categoria, tipo e valor (todos obrigatórios) — limite recorrente, vale todo mês',
+      'listar: nenhum parâmetro — mostra o limite e o gasto atual do mês em cada categoria',
+      'remover: categoria e tipo (todos obrigatórios)',
+    ],
+    exemplo: '/orcamento definir categoria:mercado tipo:gasto valor:800',
   },
   ping: {
     resumo: 'Testa se o bot está online',

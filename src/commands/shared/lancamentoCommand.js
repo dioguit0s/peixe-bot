@@ -2,7 +2,8 @@ const { SlashCommandBuilder } = require('discord.js');
 const { getOrCreateUsuario } = require('../../services/usuarioService');
 const { getOrCreateCategoria } = require('../../services/categoriaService');
 const { registrarTransacao } = require('../../services/transacaoService');
-const { formatarData, formatarMoeda } = require('../../utils/formatters');
+const { buscarOrcamento, totalGastoNoPeriodo } = require('../../services/orcamentoService');
+const { formatarData, formatarMoeda, parseMesParaIntervalo } = require('../../utils/formatters');
 
 function criarComandoLancamento({ tipo, nome, descricao }) {
   return {
@@ -60,10 +61,25 @@ function criarComandoLancamento({ tipo, nome, descricao }) {
 
       const rotulo = tipo === 'receita' ? 'Receita registrada' : 'Gasto registrado';
 
+      let aviso = '';
+      if (tipo === 'gasto') {
+        const orcamento = buscarOrcamento(usuario.id, categoria.id);
+        if (orcamento) {
+          const { dataInicio, dataFim } = parseMesParaIntervalo(null);
+          const totalMes = totalGastoNoPeriodo(usuario.id, categoria.id, dataInicio, dataFim);
+
+          if (totalMes > orcamento.valor_limite) {
+            aviso = `\n⚠️ Você ultrapassou o limite mensal de **${categoria.nome}** (${formatarMoeda(
+              totalMes,
+            )} / ${formatarMoeda(orcamento.valor_limite)}).`;
+          }
+        }
+      }
+
       await interaction.reply({
         content: `${rotulo}: **${formatarMoeda(transacao.valor)}** em **${categoria.nome}**${
           descricao ? ` — ${descricao}` : ''
-        } (${data})`,
+        } (${data})${aviso}`,
         ephemeral: true,
       });
     },
